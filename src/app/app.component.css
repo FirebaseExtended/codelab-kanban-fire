@@ -6,14 +6,14 @@ mat-toolbar > span {
   margin-left: 10px;
 }
 
-:host {
-  display: block;
-  max-width: 70%;
+.content-wrapper {
+  max-width: 1000px;
   margin: auto;
 }
 
-.wrapper {
+.container-wrapper {
   display: flex;
+  margin: auto;
   justify-content: space-around;
 }
 
