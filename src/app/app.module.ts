@@ -15,6 +15,9 @@ import { NewTaskComponent } from './new-task/new-task.component';
 import { TaskDialogComponent } from './task-dialog/task-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { TaskComponent } from './task/task.component';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from 'src/environments/environment';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [AppComponent, NewTaskComponent, TaskDialogComponent, TaskComponent],
@@ -31,7 +34,9 @@ import { TaskComponent } from './task/task.component';
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
-    FormsModule
+    FormsModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
   ],
   providers: [],
   bootstrap: [AppComponent],

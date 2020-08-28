@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -6,7 +6,11 @@ import {
 } from '@angular/cdk/drag-drop';
 import { Task } from './task/task';
 import { MatDialog } from '@angular/material/dialog';
-import { TaskDialogComponent, TaskDialogData, TaskDialogResult } from './task-dialog/task-dialog.component';
+import {
+  TaskDialogComponent,
+  TaskDialogResult,
+} from './task-dialog/task-dialog.component';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-root',
@@ -14,19 +18,17 @@ import { TaskDialogComponent, TaskDialogData, TaskDialogResult } from './task-di
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  todo: Task[] = [{
-    title: 'foo',
-    description: 'bar'
-  }, {
-    title: 'bar',
-    description: 'foo'
-  }];
-  inProgress: Task[] = [];
-  done: Task[] = [];
+  todo = this.store.collection('todo').valueChanges({ idField: 'id' });
+  inProgress = this.store.collection('inProgress').valueChanges({ idField: 'id' });
+  done = this.store.collection('done').valueChanges({ idField: 'id' });
+  tasksCollection: AngularFirestoreCollection<Task>;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private store: AngularFirestore
+  ) {}
 
-  drop(event: CdkDragDrop<string[]>): void {
+  drop(event: CdkDragDrop<Task[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -34,35 +36,28 @@ export class AppComponent {
         event.currentIndex
       );
     } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
+      this.store.collection(event.previousContainer.id).doc(event.previousContainer.data[event.previousIndex].id).delete();
+      this.store.collection(event.container.id).add(event.previousContainer.data[event.previousIndex]);
     }
   }
 
-  addItem(event: KeyboardEvent): void {
-    const target = event.target as HTMLInputElement;
-    this.todo.push({
-      title: target.value,
-      description: '',
-    });
-    target.value = '';
+  addItem(task: Task): void {
+    this.store.collection('todo').add(task);
   }
 
-  editItem(list: Task[], task: Task): void {
+  editItem(list: 'done' | 'todo' | 'inProgress', task: Task): void {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '270px',
       data: {
         task,
-        enableDelete: true
-      }
+        enableDelete: true,
+      },
     });
     dialogRef.afterClosed().subscribe((result: TaskDialogResult) => {
       if (result.delete) {
-        list.splice(list.indexOf(task), 1);
+        this.store.collection(list).doc(task.id).delete();
+      } else {
+        this.store.collection(list).doc(task.id).update(task);
       }
     });
   }
