@@ -34,19 +34,25 @@ mat-toolbar > span {
   display: block;
 }
 
-.item {
-  margin-bottom: 10px;
-  cursor: pointer;
+app-new-task {
+  margin-bottom: 30px;
 }
 
-.cdk-drag-preview {
+:host /deep/ .cdk-drag-preview {
   box-sizing: border-box;
 }
 
-.cdk-drag-placeholder {
+:host /deep/ .cdk-drag-animating {
+  transition: transform 250ms;
+}
+
+:host /deep/ .cdk-drag-placeholder {
   opacity: 0;
 }
 
-.cdk-drag-animating {
-  transition: transform 250ms;
+.empty-label {
+  font-size: 2em;
+  padding-top: 10px;
+  text-align: center;
+  opacity: 0.2;
 }

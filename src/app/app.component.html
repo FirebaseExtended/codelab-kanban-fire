@@ -4,10 +4,7 @@
 </mat-toolbar>
 
 <div class="content-wrapper">
-  <mat-form-field>
-    <mat-label>Enter item</mat-label>
-    <input matInput (keydown.enter)="addItem($event)" />
-  </mat-form-field>
+  <app-new-task (task)="todo.push($event)"></app-new-task>
 
   <div class="container-wrapper">
     <div class="container">
@@ -21,7 +18,8 @@
         (cdkDropListDropped)="drop($event)"
         class="list"
       >
-        <mat-card class="item" *ngFor="let item of todo" cdkDrag>{{ item }}</mat-card>
+        <p class="empty-label" *ngIf="todo.length === 0">Empty list</p>
+        <app-task (edit)="editItem(todo, $event)" *ngFor="let task of todo" cdkDrag [task]="task"></app-task>
       </mat-card>
     </div>
 
@@ -36,7 +34,8 @@
         (cdkDropListDropped)="drop($event)"
         class="list"
       >
-        <mat-card class="item" *ngFor="let item of inProgress" cdkDrag>{{ item }}</mat-card>
+        <p class="empty-label" *ngIf="inProgress.length === 0">Empty list</p>
+        <app-task (edit)="editItem(inProgress, $event)" *ngFor="let task of inProgress" cdkDrag [task]="task"></app-task>
       </mat-card>
     </div>
 
@@ -51,7 +50,8 @@
         (cdkDropListDropped)="drop($event)"
         class="list"
       >
-        <mat-card class="item" *ngFor="let item of done" cdkDrag>{{ item }}</mat-card>
+        <p class="empty-label" *ngIf="done.length === 0">Empty list</p>
+        <app-task (edit)="editItem(done, $event)" *ngFor="let task of done" cdkDrag [task]="task"></app-task>
       </mat-card>
     </div>
   </div>
