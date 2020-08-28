@@ -1,16 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
+import { Component } from '@angular/core';
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Task } from './task/task';
 import { MatDialog } from '@angular/material/dialog';
 import {
   TaskDialogComponent,
   TaskDialogResult,
 } from './task-dialog/task-dialog.component';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+} from '@angular/fire/firestore';
+import { BehaviorSubject } from 'rxjs';
+
+// Wrap into a BehaviorSubject so that we don't create a new
+// underlying array every time. This way the reorder method
+// of the CDK drag & drop would work since it'll operate
+// over the same array reference that we use to render the lists.
+const getObservable = (collection: AngularFirestoreCollection<Task>) => {
+  const subject = new BehaviorSubject([]);
+  collection.valueChanges({ idField: 'id' }).subscribe((val: Task[]) => {
+    subject.next(val);
+  });
+  return subject;
+};
 
 @Component({
   selector: 'app-root',
@@ -18,27 +30,31 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  todo = this.store.collection('todo').valueChanges({ idField: 'id' });
-  inProgress = this.store.collection('inProgress').valueChanges({ idField: 'id' });
-  done = this.store.collection('done').valueChanges({ idField: 'id' });
+  todo = getObservable(this.store.collection('todo'));
+  inProgress = getObservable(this.store.collection('inProgress'));
+  done = getObservable(this.store.collection('done'));
   tasksCollection: AngularFirestoreCollection<Task>;
 
-  constructor(
-    private dialog: MatDialog,
-    private store: AngularFirestore
-  ) {}
+  constructor(private dialog: MatDialog, private store: AngularFirestore) {}
 
   drop(event: CdkDragDrop<Task[]>): void {
     if (event.previousContainer === event.container) {
-      moveItemInArray(
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    } else {
-      this.store.collection(event.previousContainer.id).doc(event.previousContainer.data[event.previousIndex].id).delete();
-      this.store.collection(event.container.id).add(event.previousContainer.data[event.previousIndex]);
+      return;
     }
+    const item = event.previousContainer.data[event.previousIndex];
+    this.store.firestore.runTransaction(() => {
+      const promise = Promise.all([
+        this.store.collection(event.previousContainer.id).doc(item.id).delete(),
+        this.store.collection(event.container.id).add(item),
+      ]);
+      return promise;
+    });
+    transferArrayItem(
+      event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex
+    );
   }
 
   addItem(task: Task): void {
