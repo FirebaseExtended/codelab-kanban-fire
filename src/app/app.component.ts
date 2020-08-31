@@ -57,7 +57,7 @@ export class AppComponent {
     );
   }
 
-  editItem(list: 'done' | 'todo' | 'inProgress', task: Task): void {
+  editTask(list: 'done' | 'todo' | 'inProgress', task: Task): void {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '270px',
       data: {
@@ -74,7 +74,7 @@ export class AppComponent {
     });
   }
 
-  newItem(): void {
+  newTask(): void {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '270px',
       data: {

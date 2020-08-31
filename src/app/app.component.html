@@ -4,7 +4,7 @@
 </mat-toolbar>
 
 <div class="content-wrapper">
-  <button (click)="newItem()" mat-button>
+  <button (click)="newTask()" mat-button>
     <mat-icon>add</mat-icon> Add Task
   </button>
 
@@ -22,7 +22,7 @@
         class="list"
       >
         <p class="empty-label" *ngIf="(todo | async)?.length === 0">Empty list</p>
-        <app-task (edit)="editItem('todo', $event)" *ngFor="let task of todo | async" cdkDrag [task]="task"></app-task>
+        <app-task (edit)="editTask('todo', $event)" *ngFor="let task of todo | async" cdkDrag [task]="task"></app-task>
       </mat-card>
     </div>
 
@@ -39,7 +39,7 @@
         class="list"
       >
         <p class="empty-label" *ngIf="(inProgress | async)?.length === 0">Empty list</p>
-        <app-task (edit)="editItem('inProgress', $event)" *ngFor="let task of inProgress | async" cdkDrag [task]="task"></app-task>
+        <app-task (edit)="editTask('inProgress', $event)" *ngFor="let task of inProgress | async" cdkDrag [task]="task"></app-task>
       </mat-card>
     </div>
 
@@ -56,7 +56,7 @@
         class="list"
       >
         <p class="empty-label" *ngIf="(done | async)?.length === 0">Empty list</p>
-        <app-task (edit)="editItem('done', $event)" *ngFor="let task of done | async" cdkDrag [task]="task"></app-task>
+        <app-task (edit)="editTask('done', $event)" *ngFor="let task of done | async" cdkDrag [task]="task"></app-task>
       </mat-card>
     </div>
   </div>
