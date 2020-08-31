@@ -4,7 +4,9 @@
 </mat-toolbar>
 
 <div class="content-wrapper">
-  <app-new-task (task)="addItem($event)"></app-new-task>
+  <button (click)="newItem()" mat-button>
+    <mat-icon>add</mat-icon> Add Task
+  </button>
 
   <div class="container-wrapper">
     <div class="container">

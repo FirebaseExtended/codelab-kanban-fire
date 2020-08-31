@@ -57,10 +57,6 @@ export class AppComponent {
     );
   }
 
-  addItem(task: Task): void {
-    this.store.collection('todo').add(task);
-  }
-
   editItem(list: 'done' | 'todo' | 'inProgress', task: Task): void {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '270px',
@@ -76,5 +72,18 @@ export class AppComponent {
         this.store.collection(list).doc(task.id).update(task);
       }
     });
+  }
+
+  newItem(): void {
+    const dialogRef = this.dialog.open(TaskDialogComponent, {
+      width: '270px',
+      data: {
+        enableDelete: false,
+        task: {},
+      },
+    });
+    dialogRef
+      .afterClosed()
+      .subscribe((result: TaskDialogResult) => this.store.collection('todo').add(result.task));
   }
 }
