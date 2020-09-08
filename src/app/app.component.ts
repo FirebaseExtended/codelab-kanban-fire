@@ -33,7 +33,6 @@ export class AppComponent {
   todo = getObservable(this.store.collection('todo'));
   inProgress = getObservable(this.store.collection('inProgress'));
   done = getObservable(this.store.collection('done'));
-  tasksCollection: AngularFirestoreCollection<Task>;
 
   constructor(private dialog: MatDialog, private store: AngularFirestore) {}
 

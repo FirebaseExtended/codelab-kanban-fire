@@ -38,21 +38,17 @@ app-new-task {
   margin-bottom: 30px;
 }
 
-:host /deep/ .cdk-drag-preview {
-  box-sizing: border-box;
-}
-
-:host /deep/ .cdk-drag-animating {
-  transition: transform 250ms;
-}
-
-:host /deep/ .cdk-drag-placeholder {
-  opacity: 0;
-}
-
 .empty-label {
   font-size: 2em;
   padding-top: 10px;
   text-align: center;
   opacity: 0.2;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
 }

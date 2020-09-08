@@ -8,7 +8,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./task-dialog.component.css'],
 })
 export class TaskDialogComponent {
-  task: Partial<Task> = { ...this.data.task };
+  backupTask: Partial<Task> = { ...this.data.task };
 
   constructor(
     public dialogRef: MatDialogRef<TaskDialogComponent>,
@@ -16,8 +16,8 @@ export class TaskDialogComponent {
   ) {}
 
   cancel(): void {
-    this.data.task.title = this.task.title;
-    this.data.task.description = this.task.description;
+    this.data.task.title = this.backupTask.title;
+    this.data.task.description = this.backupTask.description;
     this.dialogRef.close(this.data);
   }
 }
