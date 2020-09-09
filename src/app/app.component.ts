@@ -8,9 +8,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 })
 export class AppComponent {
   todo = [];
-
   inProgress = [];
-
   done = [];
 
   drop(event: CdkDragDrop<string[]>): void {
