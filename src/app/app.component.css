@@ -19,28 +19,18 @@ mat-toolbar > span {
 
 .container {
   width: 400px;
-  max-width: 100%;
-  margin: 0 25px 25px 0;
-  display: inline-block;
-  vertical-align: top;
+  margin-left: 25px;
 }
 
 .list {
   border: solid 1px #ccc;
   min-height: 60px;
-  background: white;
   border-radius: 4px;
-  overflow: hidden;
-  display: block;
 }
 
 .item {
   margin-bottom: 10px;
   cursor: pointer;
-}
-
-.cdk-drag-preview {
-  box-sizing: border-box;
 }
 
 .cdk-drag-placeholder {
