@@ -13,7 +13,6 @@ mat-toolbar > span {
 
 .container-wrapper {
   display: flex;
-  margin: auto;
   justify-content: space-around;
 }
 
