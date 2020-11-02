@@ -24,7 +24,7 @@
     <mat-icon>add</mat-icon> Add Task
   </button>
 
-  <div class="container-wrapper">
+  <div cdkDropListGroup class="container-wrapper">
     <div class="container">
       <h2>Backlog</h2>
 
@@ -33,7 +33,6 @@
         id="todo"
         #todoList="cdkDropList"
         [cdkDropListData]="todo"
-        [cdkDropListConnectedTo]="[doneList, inProgressList]"
         (cdkDropListDropped)="drop($event)"
         class="list">
         <p class="empty-label" *ngIf="todo.length === 0">Empty list</p>
@@ -49,7 +48,6 @@
         id="inProgress"
         #inProgressList="cdkDropList"
         [cdkDropListData]="inProgress"
-        [cdkDropListConnectedTo]="[todoList, doneList]"
         (cdkDropListDropped)="drop($event)"
         class="list">
         <p class="empty-label" *ngIf="inProgress.length === 0">Empty list</p>
@@ -65,7 +63,6 @@
         id="done"
         #doneList="cdkDropList"
         [cdkDropListData]="done"
-        [cdkDropListConnectedTo]="[todoList, inProgressList]"
         (cdkDropListDropped)="drop($event)"
         class="list">
         <p class="empty-label" *ngIf="done.length === 0">Empty list</p>
