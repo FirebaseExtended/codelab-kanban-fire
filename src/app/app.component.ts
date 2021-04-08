@@ -33,7 +33,7 @@ import { BehaviorSubject } from 'rxjs';
 // of the CDK drag & drop would work since it'll operate
 // over the same array reference that we use to render the lists.
 const getObservable = (collection: AngularFirestoreCollection<Task>) => {
-  const subject = new BehaviorSubject([]);
+  const subject = new BehaviorSubject<Task[]>([]);
   collection.valueChanges({ idField: 'id' }).subscribe((val: Task[]) => {
     subject.next(val);
   });
@@ -52,8 +52,11 @@ export class AppComponent {
 
   constructor(private dialog: MatDialog, private store: AngularFirestore) {}
 
-  drop(event: CdkDragDrop<Task[]>): void {
+  drop(event: CdkDragDrop<Task[]|null>): void {
     if (event.previousContainer === event.container) {
+      return;
+    }
+    if (!event.previousContainer.data || !event.container.data) {
       return;
     }
     const item = event.previousContainer.data[event.previousIndex];
