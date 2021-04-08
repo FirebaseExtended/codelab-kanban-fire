@@ -20,6 +20,7 @@ import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskDialogResult, TaskDialogComponent } from './task-dialog/task-dialog.component';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -27,9 +28,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  todo = this.store.collection('todo').valueChanges({ idField: 'id' });
-  inProgress = this.store.collection('inProgress').valueChanges({ idField: 'id' });
-  done = this.store.collection('done').valueChanges({ idField: 'id' });
+  todo = this.store.collection('todo').valueChanges({ idField: 'id' }) as Observable<Task[]>;
+  inProgress = this.store.collection('inProgress').valueChanges({ idField: 'id' }) as Observable<Task[]>;
+  done = this.store.collection('done').valueChanges({ idField: 'id' }) as Observable<Task[]>;
 
   constructor(private dialog: MatDialog, private store: AngularFirestore) {}
 
@@ -62,8 +63,11 @@ export class AppComponent {
     });
   }
 
-  drop(event: CdkDragDrop<Task[]>): void {
+  drop(event: CdkDragDrop<Task[]|null>): void {
     if (event.previousContainer === event.container) {
+      return;
+    }
+    if (!event.previousContainer.data || !event.container.data) {
       return;
     }
     const item = event.previousContainer.data[event.previousIndex];
