@@ -23,7 +23,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { BehaviorSubject } from 'rxjs';
 
 const getObservable = (collection: AngularFirestoreCollection<Task>) => {
-  const subject = new BehaviorSubject([]);
+  const subject = new BehaviorSubject<Task[]>([]);
   collection.valueChanges({ idField: 'id' }).subscribe((val: Task[]) => {
     subject.next(val);
   });
@@ -71,8 +71,11 @@ export class AppComponent {
     });
   }
 
-  drop(event: CdkDragDrop<Task[]>): void {
+  drop(event: CdkDragDrop<Task[]|null>): void {
     if (event.previousContainer === event.container) {
+      return;
+    }
+    if (!event.previousContainer.data || !event.container.data) {
       return;
     }
     const item = event.previousContainer.data[event.previousIndex];
