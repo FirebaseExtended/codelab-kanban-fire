@@ -23,11 +23,9 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  todo = [];
-
-  inProgress = [];
-
-  done = [];
+  todo: string[] = [];
+  inProgress: string[] = [];
+  done: string[] = [];
 
   drop(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container) {
@@ -40,7 +38,7 @@ export class AppComponent {
     }
   }
 
-  addItem(event: KeyboardEvent): void {
+  addItem(event: Event): void {
     const target = event.target as HTMLInputElement;
     this.todo.push(target.value);
     target.value = '';
