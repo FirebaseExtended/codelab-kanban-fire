@@ -43,7 +43,12 @@ export class AppComponent {
     });
     dialogRef
       .afterClosed()
-      .subscribe((result: TaskDialogResult) => this.store.collection('todo').add(result.task));
+      .subscribe((result: TaskDialogResult) => {
+        if (!result) {
+          return;
+        }
+        this.store.collection('todo').add(result.task);
+      });
   }
 
   editTask(list: 'done' | 'todo' | 'inProgress', task: Task): void {
@@ -55,6 +60,9 @@ export class AppComponent {
       },
     });
     dialogRef.afterClosed().subscribe((result: TaskDialogResult) => {
+      if (!result) {
+        return;
+      }
       if (result.delete) {
         this.store.collection(list).doc(task.id).delete();
       } else {
