@@ -63,6 +63,9 @@ export class AppComponent {
       },
     });
     dialogRef.afterClosed().subscribe((result: TaskDialogResult) => {
+      if (!result) {
+        return;
+      }
       if (result.delete) {
         this.store.collection(list).doc(task.id).delete();
       } else {
