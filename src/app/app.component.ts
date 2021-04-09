@@ -50,7 +50,12 @@ export class AppComponent {
     });
     dialogRef
       .afterClosed()
-      .subscribe((result: TaskDialogResult) => this.todo.push(result.task));
+      .subscribe((result: TaskDialogResult) => {
+        if (!result) {
+          return;
+        }
+        this.todo.push(result.task);
+      });
   }
 
   editTask(list: 'done' | 'todo' | 'inProgress', task: Task): void {
@@ -62,6 +67,9 @@ export class AppComponent {
       },
     });
     dialogRef.afterClosed().subscribe((result: TaskDialogResult) => {
+      if (!result) {
+        return;
+      }
       const dataList = this[list];
       const taskIndex = dataList.indexOf(task);
       if (result.delete) {
