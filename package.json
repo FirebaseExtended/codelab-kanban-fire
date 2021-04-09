@@ -12,7 +12,7 @@
   "private": true,
   "dependencies": {
     "@angular/fire": "6.1.4",
-    "firebase": "^7.13.1",
+    "firebase": "8.3.3",
     "@angular/animations": "11.2.2",
     "@angular/cdk": "11.2.8",
     "@angular/common": "11.2.2",
