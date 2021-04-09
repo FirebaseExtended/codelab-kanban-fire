@@ -50,7 +50,12 @@ export class AppComponent {
     });
     dialogRef
       .afterClosed()
-      .subscribe((result: TaskDialogResult) => this.todo.push(result.task));
+      .subscribe((result: TaskDialogResult) => {
+        if (!result) {
+          return;
+        }
+        this.todo.push(result.task);
+      });
   }
 
   editTask(list: string, task: Task): void {}
