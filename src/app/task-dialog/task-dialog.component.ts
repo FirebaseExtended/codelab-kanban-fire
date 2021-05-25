@@ -29,7 +29,9 @@ export class TaskDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<TaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: TaskDialogData
-  ) {}
+  ) {
+    console.log(`Edit: ${data.task.title}`);
+  }
 
   cancel(): void {
     this.data.task.title = this.backupTask.title;

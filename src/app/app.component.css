@@ -54,6 +54,7 @@ app-new-task {
   opacity: 0.2;
 }
 
+/* classes provided by the Angular SDK viewable in action of dragging/dropping only */
 .cdk-drag-animating {
   transition: transform 250ms;
 }

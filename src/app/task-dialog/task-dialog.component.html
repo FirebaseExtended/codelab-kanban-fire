@@ -25,8 +25,10 @@
 </mat-form-field>
 
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="{ task: data.task }">OK</button>
-  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-button
+    (click)="cancel()">Cancel</button>
+  <button mat-button
+    [mat-dialog-close]="{ task: data.task }">OK</button>
   <button
     *ngIf="data.enableDelete"
     mat-fab
