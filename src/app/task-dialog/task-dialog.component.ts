@@ -15,6 +15,7 @@
  */
 
 import { Component, Inject } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Task } from '../task/task';
 
@@ -24,22 +25,27 @@ import { Task } from '../task/task';
   styleUrls: ['./task-dialog.component.css'],
 })
 export class TaskDialogComponent {
-  private backupTask: Partial<Task> = { ...this.data.task };
+  form = new FormGroup({
+    title: new FormControl('', Validators.required),
+    description: new FormControl('')
+  });
 
   constructor(
     public dialogRef: MatDialogRef<TaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: TaskDialogData
-  ) {}
+  ) {
+    if (data.task) {
+      this.form.patchValue(data.task);
+    }
+  }
 
   cancel(): void {
-    this.data.task.title = this.backupTask.title;
-    this.data.task.description = this.backupTask.description;
     this.dialogRef.close(this.data);
   }
 }
 
 export interface TaskDialogData {
-  task: Partial<Task>;
+  task: Partial<Task> | null;
   enableDelete: boolean;
 }
 

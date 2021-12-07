@@ -45,13 +45,13 @@ export class AppComponent {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '270px',
       data: {
-        task: {},
+        task: null,
       },
     });
     dialogRef
       .afterClosed()
       .subscribe((result: TaskDialogResult) => {
-        if (!result) {
+        if (!result?.task) {
           return;
         }
         this.todo.push(result.task);
@@ -75,7 +75,7 @@ export class AppComponent {
       if (result.delete) {
         dataList.splice(taskIndex, 1);
       } else {
-        dataList[taskIndex] = task;
+        dataList[taskIndex] = result.task;
       }
     });
   }
